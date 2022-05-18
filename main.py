@@ -1,6 +1,6 @@
 
 # A simple Python script for converting unicode Tamil
-# characters to TACE16 format suitable for pasting
+# characters to TACE16-like format suitable for pasting in
 # Affinity programs. You will have to reformat all the
 # text in Affinity after pasting and toggling to unicode.
 
@@ -17,7 +17,7 @@ import tkinter.font as font
 inputValue4 = ""  # global return value
 
 # open and read the file after the appending:
-f = open("tafe", "r")
+f = open("tace", "r")
 var = f.read()
 var = var.split()
 # print some test values
@@ -26,7 +26,7 @@ var = var.split()
 f.close()
 
 # open Tk window
-root=Tk()
+root = Tk()
 root.title('A simple Unicode to TACE16 format converter for Affinity programs')
 
 # create Font object
@@ -40,24 +40,28 @@ myFont = font.Font(family='Helvetica')
 # print(tk_font.families())
 # print(tk_font.names())
 
+
 def clear_all():
     inputValue4 = ""
     clipboard.copy(inputValue4)  # now the clipboard content will be string "abc"
     text = clipboard.paste()  # text will have the content of clipboard
-    textBox.delete("1.0", END) # clear text boxes
+    textBox.delete("1.0", END)  # clear text boxes
     textBox2.delete("1.0", END)
     print('screen and clipboard cleared')
 
+
 def copy_clipboard():
-    clipboard.copy(inputValue4)  # now the clipboard content will be string "abc"
+    clipboard.copy(inputValue4)  # now the clipboard will have the data
     text = clipboard.paste()  # text will have the content of clipboard
     print('copy to clipboard done')
+
 
 def retrieve_input():
 
     global inputValue4
 
-    inputValue = textBox.get("1.0","end-1c")
+#   manipulate the unicode string and convert
+    inputValue = textBox.get("1.0", "end-1c")
     inputValue2 = inputValue.encode("unicode-escape", "replace")
     inputValue3 = str(inputValue2).replace("\\u", "")
     inputValue3a = str(inputValue3).replace("\\n", "u+20")
@@ -70,23 +74,24 @@ def retrieve_input():
 #    print(inputValue)
 #    print(inputValue2)
 #    print(inputValue3)
-    print(inputValue4)
+#    print(inputValue4)
 
     for i in range(int(len(var)/2)):
-        #print(i)
+        # print(i)
         inputValue4 = str(inputValue4).replace(str(var[2*i]).lower(), 'u+'+str(var[2*i+1]).lower())
 
-    #print(ascii(inputValue))
-    #print(inputValue4)
+    # print(ascii(inputValue))
+    # print(inputValue4)
     print('conversion done')
     textBox2.insert(INSERT, inputValue4)
 
+
 # display first text box using std font
-textBox=Text(root, height=10, width=100, font = myFont)
+textBox = Text(root, height=10, width=100, font=myFont)
 textBox.pack()
 
 # display second text box using target font
-textBox2 = Text(root, height=10, width=100, font= myFont)
+textBox2 = Text(root, height=10, width=100, font=myFont)
 textBox2.pack(pady=20)
 
 # button clicks section
